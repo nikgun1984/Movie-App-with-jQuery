@@ -2,9 +2,13 @@ $(document).ready(function(){
     const $map = new Map();
     const $tableDiv = $('#table div');
     $tableDiv.append('<table id="myTable"></table>');
+    $('#myTable').append('<tbody></tbody>');
     let $entry = $('<tr></tr>');
-    $entry.append(`<th>Movie Titles</th>`).append(`<th>Movie Ratings</th>`).append(`<th>Remove Title</th>`);
-    $("table").append($entry);
+    $entry.append(`<th class='ttl'>Movie Titles</th>`).append(`<th class="rtn">Movie Ratings</th>`).append(`<th>Remove Title</th>`);
+    $("tbody").append($entry);
+    $('tr th').eq(0).on('click', sortTable.bind(this,0)).on('mouseover');
+    $('tr th').eq(1).on('click', sortTable.bind(this,1));
+
     const $minMax = {min:"0",max:"10"};
     $("#ratings").attr($minMax);
     $("#title").attr("minlength","2");
@@ -39,10 +43,41 @@ $(document).ready(function(){
         $('input').val("");
     }
 
+    function sortTable(n){
+        let switching, i, shouldSwitch, dir, switchcount = 0;
+        const table = document.getElementById("myTable");
+        switching = true;
+        dir = "asc"; 
 
-    // function sortTable(){
-    //     const $table = $("#table");
-    //     let $rows = $table.rows;
-    //     let switching = 
-    // }
-})
+        while (switching) {
+          switching = false;
+          const rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+
+            let x = rows[i].getElementsByTagName("TD")[n];
+            let y = rows[i + 1].getElementsByTagName("TD")[n];
+            if (dir == "asc") {
+              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                shouldSwitch= true;
+                break;
+              }
+            } else if (dir == "desc") {
+              if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                shouldSwitch = true;
+                break;
+              }
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount ++;      
+          } else {
+            if (switchcount == 0 && dir == "asc") {
+              dir = "desc";
+              switching = true;
+            }
+          }
+    }}
+});

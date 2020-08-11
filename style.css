@@ -83,3 +83,14 @@ button{
     width: 50%;
     height: 50%;
 }
+
+.ttl:hover{
+    background-color:#6c57b6;
+    color: white;
+}
+
+.rtn:hover{
+    background-color:#6c57b6;
+    color: white;
+}
+
